@@ -1,6 +1,10 @@
 from fastapi import FastAPI
 
 from app.routers import auth, tracks
+from app.db.session import engine, Base
+from app.models import snapshot  # noqa: F401 — needed so SQLAlchemy registers the model
+
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Spotify Trends Dashboard API")
 
