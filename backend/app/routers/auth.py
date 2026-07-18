@@ -9,15 +9,19 @@ router = APIRouter()
 SCOPES = "user-top-read user-read-recently-played"
 
 
+from pathlib import Path
+
+CACHE_PATH = Path(__file__).resolve().parent.parent.parent.parent / ".spotify_cache"
+
+
 def get_spotify_oauth() -> SpotifyOAuth:
     return SpotifyOAuth(
         client_id=settings.spotify_client_id,
         client_secret=settings.spotify_client_secret,
         redirect_uri=settings.spotify_redirect_uri,
         scope=SCOPES,
-        cache_path=".spotify_cache",
+        cache_path=str(CACHE_PATH),
     )
-
 
 @router.get("/login")
 def login():
