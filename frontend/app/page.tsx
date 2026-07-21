@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -59,9 +60,15 @@ export default function Home() {
           <p className="font-mono text-xs tracking-[0.2em] text-[#8A8680] uppercase mb-3">
             Listening Report
           </p>
-          <h1 className="text-5xl md:text-6xl font-bold tracking-tight">
+          <h1 className="text-5xl md:text-6xl font-bold tracking-tight mb-4">
             Your Top Sounds
           </h1>
+          <Link
+            href="/trends"
+            className="font-mono text-sm text-[#8A8680] hover:text-[#B8434F] transition-colors"
+          >
+            View Trends →
+          </Link>
         </header>
 
         <Tabs value={timeRange} onValueChange={setTimeRange} className="mb-10">
