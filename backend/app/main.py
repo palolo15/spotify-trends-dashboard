@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from app.routers import auth, tracks, trends
 from app.db.session import engine, Base
 from app.models import snapshot  # noqa: F401 — needed so SQLAlchemy registers the model
+from app.models import token  # noqa: F401 — needed so SQLAlchemy registers the model
 
 Base.metadata.create_all(bind=engine)
 
@@ -56,3 +57,4 @@ def snapshot_status():
         }
     finally:
         db.close()
+

@@ -3,22 +3,17 @@ import spotipy
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from app.routers.auth import get_spotify_oauth
+from app.services.token_service import get_valid_access_token
 from app.models.snapshot import Snapshot
 
 
-def get_spotify_client() -> spotipy.Spotify:
-    sp_oauth = get_spotify_oauth()
-    token_info = sp_oauth.get_cached_token()
-    if not token_info:
-        raise RuntimeError(
-            "No cached Spotify token found. Run the app and visit /login first."
-        )
-    return spotipy.Spotify(auth=token_info["access_token"])
+def get_spotify_client(db: Session) -> spotipy.Spotify:
+    access_token = get_valid_access_token(db)
+    return spotipy.Spotify(auth=access_token)
 
 
 def fetch_and_store_recently_played(db: Session) -> dict:
-    sp = get_spotify_client()
+    sp = get_spotify_client(db)
     results = sp.current_user_recently_played(limit=50)
 
     inserted = 0
@@ -26,7 +21,7 @@ def fetch_and_store_recently_played(db: Session) -> dict:
 
     for item in results["items"]:
         track = item["track"]
-        played_at_str = item["played_at"]  # ISO 8601 string from Spotify
+        played_at_str = item["played_at"]
         played_at = datetime.fromisoformat(played_at_str.replace("Z", "+00:00"))
 
         snapshot = Snapshot(
