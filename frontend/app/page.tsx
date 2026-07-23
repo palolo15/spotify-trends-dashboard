@@ -17,8 +17,7 @@ type Artist = {
   spotify_id: string;
 };
 
-const API_BASE = "http://127.0.0.1:8000";
-const TIME_RANGES = [
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "http://127.0.0.1:8000";const TIME_RANGES = [
   { value: "short_term", label: "Last 4 Weeks" },
   { value: "medium_term", label: "Last 6 Months" },
   { value: "long_term", label: "All Time" },
